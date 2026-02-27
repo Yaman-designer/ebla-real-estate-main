@@ -24,14 +24,13 @@ const NotificationDropdown: React.FC = () => {
   async function loadNotifications() {
     try {
       setLoading(true);
-
       const [count, notifRes] = await Promise.all([
         getUnreadCount(),
         getNotifications(),
       ]);
-
-      setUnreadCount(Number(count) || 0);
-      setNotifications((notifRes && notifRes.list) || []);
+      const list = (notifRes && notifRes.list) || [];
+      setNotifications(list);
+      setUnreadCount(Number(count) || list.length);
     } catch (error) {
       console.error("Notification load error:", error);
     } finally {
@@ -157,11 +156,15 @@ const NotificationDropdown: React.FC = () => {
                       <div className="flex-grow-1">
                         <Link to="#!" className="stretched-link">
                           <h6 className="mt-0 fs-md mb-1 lh-base">
-                            {n.messageType || "Message"}
+                            {n.noteData?.createdByName ||
+                              n.userName ||
+                              "Message"}
                           </h6>
                         </Link>
                         <p className="mb-0 fs-sm text-muted">
-                          {n.message || n.name}
+                          {n.noteData?.post ||
+                            n.message ||
+                            n.noteData?.parentName}
                         </p>
                       </div>
                     </div>

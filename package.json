@@ -102,4 +102,5 @@
   "overrides": {
     "typescript": "^5.3.3"
   }
+  ,"proxy": "https://staging.realtorvoice.gr"
 }
